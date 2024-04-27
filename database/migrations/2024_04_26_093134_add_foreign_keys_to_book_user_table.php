@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('book_user', function (Blueprint $table) {
             $table->foreign(['user_id'], 'book_user_ibfk_1')->references(['id'])->on('users')->onUpdate('restrict')->onDelete('restrict');
-            $table->foreign(['book_id'], 'book_user_ibfk_2')->references(['id'])->on('books')->onUpdate('restrict')->onDelete('restrict');
         });
     }
 

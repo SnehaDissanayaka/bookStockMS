@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use App\Models\Book;
 use App\Models\BookCategories;
 
@@ -28,18 +30,11 @@ class BooksController extends Controller
     }
 
     /**
-     * Redirect to Add a book
-     */
-    public function addNewBook(){
-        return view('add-book');
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('add-book');
     }
 
     /**
@@ -47,7 +42,30 @@ class BooksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // Validate the form data
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'book_category_id' => 'required|exists:book_cate,id',
+            'price' => 'required|numeric',
+            'stock' => 'required|numeric',
+        ]);
+
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Validation passed, store the book
+        $this->book->create($request->all());
+
+        // Flash success message to session
+        Session::flash('success', 'Book added successfully!');
+
+        // Redirect to the home page
+        return redirect()->route('home.index');
+        
     }
 
     /**
@@ -58,27 +76,55 @@ class BooksController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $categories = BookCategories::all();
+        return view('edit-book', compact('book', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validate the form data
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'book_category_id' => 'required|exists:book_cate,id',
+            'price' => 'required|numeric',
+            'stock' => 'required|numeric',
+        ]);
+
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Validation passed, update the book
+        $book = Book::findOrFail($id);
+        $book->update($request->all());
+
+        // Flash success message to session
+        Session::flash('success', 'Book updated successfully!');
+
+        // Redirect to the home page
+        return redirect()->route('home.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($home)
     {
-        //
+        $book = Book::findOrFail($home);
+        $book->delete();
+
+        // Flash success message to session
+        Session::flash('success', 'Book deleted successfully!');
+
+        // Redirect to the home page
+        return redirect()->route('home.index');
     }
 }

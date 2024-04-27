@@ -1,14 +1,14 @@
 @extends('layout')
 @section('content')
-        <div class="container-fluid">
+<div class="container-fluid">
             <?php 
             echo '<script type="text/javascript">' .
-            'console.log(' . $books . ');</script>';
+            'console.log(' . $book_lendings . ');</script>';
             ?>
 
             <div class="table-header">
                 <h2>Books</h2>
-                <a href="{{ url('/add-book') }}" class="btn btn-success add-button" title="Add New Book">
+                <a href="{{ url('/add-book-lending') }}" class="btn btn-success add-button" title="Add New Book">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                 </a>
             </div>
@@ -27,40 +27,37 @@
                             <tr>
                                 <th>#</th>
                                 <th>title</th>
-                                <th>author</th>
-                                <th>price</th>
-                                <th>category</th>
-                                <th>Stock</th>
+                                <th>borrower</th>
+                                <th>borrowed on</th>
+                                <th>returned on</th>
                                 <th>Options</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($books as $item)
+                        @foreach($book_lendings as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->title }}</td>
-                                <td>{{ $item->author }}</td>
-                                <td>{{ $item->price }}</td>
-                                <td>{{ $item->category }}</td>
-                                <td>{{ $item->stock}}</d>
+                                <td>{{ $item->book }}</td>
+                                <td>{{ $item->lent_to }}</td>
+                                <td>{{ $item->borrowed_at }}</td>
+                                <td>{{ $item->returned_at }}</td>
                                 <td>
-                                    <a href="{{ route('home.edit', ['home' => $item->id]) }}" class="btn btn-primary btn-sm">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                    </a>
-                                    <form method="POST" action="{{ route('home.destroy', ['home' => $item->id]) }}" style="display: inline;">
+                                @if($item->returned_at)
+                                    <p>Already returned!</p>
+                                @else
+                                    <form method="POST" action="{{ route('book-lendings.return', ['id' => $item->id]) }}">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete Book" onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Return
                                         </button>
                                     </form>
+                                @endif
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                 </div>
- 
             </div>
         </div>
 @endsection

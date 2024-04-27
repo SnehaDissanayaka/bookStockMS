@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('book_user', function (Blueprint $table) {
-            $table->integer('id', true);
+            $table->increments('id', true);
             $table->bigInteger('user_id')->unsigned()->index('user_id');
-            $table->integer('book_id')->nullable()->index('book_id');
+            $table->integer('book_id')->unsigned()->index('book_id');
             $table->timestamp('borrowed_at')->useCurrent();
             $table->timestamp('returned_at')->nullable();
         });

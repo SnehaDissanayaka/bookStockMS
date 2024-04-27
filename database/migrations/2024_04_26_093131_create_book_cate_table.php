@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('book_cate', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->increments('id');
             $table->string('name')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
