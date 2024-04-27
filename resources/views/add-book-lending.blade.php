@@ -26,7 +26,7 @@
             <select id="inputCategory" class="form-control" name="book_id">
                 <option  disabled selected value>Choose...</option>
                 @foreach($books as $item)
-                <option value={{$item->id}} >{{ $item->title }}</option>
+                <option value={{$item->id}}  @if($item->stock == 0) disabled title="Out of stock" @endif>{{ $item->title }}</option>
                 @endforeach
             </select>
             </div>
@@ -35,7 +35,7 @@
             <select id="inputCategory" class="form-control" name="user_id">
                 <option  disabled selected value>Choose...</option>
                 @foreach($book_users as $item)
-                <option value={{$item->id}} >{{ $item->name }}</option>
+                <option value={{$item->id}}>{{ $item->name }}</option>
                 @endforeach
             </select>
             </div>

@@ -7,15 +7,27 @@
             ?>
 
             <div class="table-header">
-                <h2>Books</h2>
+                <h2>Book Lending</h2>
                 <a href="{{ url('/add-book-lending') }}" class="btn btn-success add-button" title="Add New Book">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="fa fa-plus" aria-hidden="true"></i> Lend Book
                 </a>
             </div>
 
             @if (Session::has('success'))
                 <div class="alert alert-success">
                     {{ Session::get('success') }}
+                </div>
+            @endif
+
+            @if (Session::has('warning'))
+                <div class="alert alert-warning">
+                    {{ Session::get('warning') }}
+                </div>
+            @endif
+
+            @if (Session::has('error'))
+                <div class="alert alert-danger">
+                    {{ Session::get('error') }}
                 </div>
             @endif
 
@@ -58,6 +70,9 @@
                         </tbody>
                     </table>
                 </div>
+                <br>
+                <!-- Pagination links -->
+                {{ $book_lendings->links() }}
             </div>
         </div>
 @endsection

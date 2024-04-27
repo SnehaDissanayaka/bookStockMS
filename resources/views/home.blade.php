@@ -9,7 +9,7 @@
             <div class="table-header">
                 <h2>Books</h2>
                 <a href="{{ url('/add-book') }}" class="btn btn-success add-button" title="Add New Book">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add Book
                 </a>
             </div>
 
@@ -20,6 +20,21 @@
             @endif
 
             <div class="col-md-9">
+                <br>
+                <form class="form-inline" action="{{ route('home.index') }}" method="GET">
+                    <div class="form-group mb-2">
+                        <label for="category_filter" class="sr-only">Filter by Category:</label>
+                        <select id="category_filter" class="form-control" name="category_filter">
+                            <option value="">All Categories</option>
+                            @foreach($categories as $category)
+                            <option value="{{ $category->id }}" @if(Request::input('category_filter') == $category->id) selected @endif>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2" style="margin-left: 10px">Filter</button>
+                    <a href="{{ route('home.index') }}" class="btn btn-secondary mb-2 ml-2">Clear Filters</a>
+                </form>
+
                 <br>
                 <div class="table-responsive">
                     <table class="table">
@@ -60,7 +75,9 @@
                         </tbody>
                     </table>
                 </div>
- 
+                <br>
+                <!-- Pagination links -->
+                {{ $books->links() }}
             </div>
         </div>
 @endsection

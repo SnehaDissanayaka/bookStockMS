@@ -23,7 +23,7 @@ class BookLendingController extends Controller
      */
     public function index()
     {
-        $book_lendings = BookLending::all();
+        $book_lendings = BookLending::paginate(7);
 
         foreach($book_lendings as $book_lending){
             $user = BookUsers::find($book_lending->user_id);
@@ -50,21 +50,39 @@ class BookLendingController extends Controller
      */
     public function store(Request $request)
     {
-        $this->book_lending->create($request->all());
-
-        // Decrease the stock of the book by 1
         $book = Book::find($request->input('book_id'));
+
         if ($book) {
-            $book->stock -= 1;
-            $book->save();
+            echo ($book->stock);
+            // Check if stock is available
+            if ($book->stock > 0) {
+                // Create the book lending
+                $this->book_lending->create($request->all());
+
+                // Decrease the stock of the book by 1
+                $book->stock -= 1;
+                $book->save();
+
+                // Flash success message to session
+                Session::flash('success', 'Book lent successfully!');
+                if($book->stock == 0){
+                    // Flash warning message if stock has become zero
+                    Session::flash('warning', 'FYI, the book just got out of stock!');
+                }
+            } else {
+                // Flash warning message if stock is zero
+                Session::flash('error', 'Sorry, the book is out of stock!');
+            }
+        } else {
+            // Flash error message if book is not found
+            Session::flash('error', 'Book not found!');
         }
 
-        // Flash success message to session
-        Session::flash('success', 'Book lent successfully!');
-
-        // Redirect to the home page
+        // Redirect back to the book lending index page
         return redirect()->route('book-lendings.index');
     }
+
+    
 
     public function returnBook(Request $request, $id)
     {

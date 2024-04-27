@@ -18,15 +18,33 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
+        // $books = Book::paginate(7);
+        // $categories = BookCategories::all();
+        // foreach($books as $book){
+        //     $category = BookCategories::find($book->book_category_id);
+        //     $book->category = $category->name;
+        // }
+        // $response['books'] = $books;
+        // return view('home', compact('books', 'categories'));
+        $query = Book::query();
+        $categories = BookCategories::all();
+        
+        // Filter by category if category filter is applied
+        if ($request->has('category_filter')) {
+            $query->where('book_category_id', $request->input('category_filter'));
+        }
+        
+        // Paginate the results
+        $books = $query->paginate(7);
+
         foreach($books as $book){
             $category = BookCategories::find($book->book_category_id);
             $book->category = $category->name;
         }
-        $response['books'] = $books;
-        return view('home')->with($response);
+
+        return view('home', compact('books', 'categories'));
     }
 
     /**

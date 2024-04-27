@@ -23,8 +23,6 @@ class BookUsersController extends Controller
         $book_users = BookUsers::all();
         $books = Book::all();
         return view('add-book-lending', compact('books', 'book_users'));
-        // $response['book_users'] = $book_users;
-        // return view('add-book-lending')->with($response);
     }
 
     /**
