@@ -20,6 +20,12 @@
                 <li class="nav-item {{ Request::is('book-lendings') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ url('/book-lendings') }}">Book Lendings</a>
                 </li>
+                <li class="nav-item {{ Request::is('book-categories') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('/book-categories') }}">Book Categories</a>
+                </li>
+                <li class="nav-item {{ Request::is('book-users') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ url('/book-users') }}">Users</a>
+                </li>
             </ul>
         </div>
     </nav>
