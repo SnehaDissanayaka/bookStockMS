@@ -19,6 +19,16 @@ class BookCategoriesController extends Controller
      */
     public function index()
     {
+        $book_categories = BookCategories::paginate(7);
+        $response['book_categories'] = $book_categories;
+        return view('book-categories')->with($response);
+    }
+
+    /**
+     * Get the list of resource for adding to another page.
+     */
+    public function get_book_categories()
+    {
         $book_categories = BookCategories::all();
         $response['book_categories'] = $book_categories;
         return view('add-book')->with($response);

@@ -12,8 +12,9 @@ Route::get('/', function () {
 });
 
 Route::resource("/home", BooksController::class);
-Route::resource('/add-book', BookCategoriesController::class);
+Route::resource('/add-book', 'App\Http\Controllers\BookCategoriesController@get_book_categories');
 Route::resource('/book-lendings', BookLendingController::class);
 Route::resource('/add-book-lending', BookUsersController::class);
+Route::resource('/book-categories',  BookCategoriesController::class );
 Route::post('/book-lendings/{id}/return', 'App\Http\Controllers\BookLendingController@returnBook')->name('book-lendings.return');
 Route::get('/home', [BooksController::class, 'index'])->name('home.index');
