@@ -8,8 +8,8 @@
 
             <div class="table-header">
                 <h2>Book Lending</h2>
-                <a href="{{ url('/add-book-lending') }}" class="btn btn-success add-button" title="Add New Book">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Lend Book
+                <a href="{{ url('/add-category') }}" class="btn btn-success add-button" title="Add Categoryk">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add Category
                 </a>
             </div>
 

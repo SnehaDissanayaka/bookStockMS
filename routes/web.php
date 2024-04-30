@@ -16,5 +16,8 @@ Route::resource('/add-book', 'App\Http\Controllers\BookCategoriesController@get_
 Route::resource('/book-lendings', BookLendingController::class);
 Route::resource('/add-book-lending', BookUsersController::class);
 Route::resource('/book-categories',  BookCategoriesController::class );
+Route::get('/add-category', function(){
+    return view('add-book-category');
+});
 Route::post('/book-lendings/{id}/return', 'App\Http\Controllers\BookLendingController@returnBook')->name('book-lendings.return');
 Route::get('/home', [BooksController::class, 'index'])->name('home.index');
